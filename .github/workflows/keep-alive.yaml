@@ -2,7 +2,6 @@ name: Supabase Keepalive
 
 on:
   schedule:
-    # Every 12 hours
     - cron: '0 */12 * * *'
   workflow_dispatch:
 
@@ -10,7 +9,6 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     timeout-minutes: 2
-
     steps:
       - name: Ping Supabase keepalive function
         run: |
