@@ -1,4 +1,4 @@
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient } from "jsr:@supabase/supabase-js@2";
 
 Deno.serve(async () => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
@@ -7,25 +7,18 @@ Deno.serve(async () => {
   if (!supabaseUrl || !serviceRoleKey) {
     return new Response(
       JSON.stringify({ ok: false, error: "Missing environment variables" }),
-      {
-        status: 500,
-        headers: { "content-type": "application/json" },
-      }
+      { status: 500, headers: { "content-type": "application/json" } }
     );
   }
 
   const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-  // Creates real but very low-impact DB activity
   const { error } = await supabase.rpc("keepalive_ping");
 
   if (error) {
     return new Response(
       JSON.stringify({ ok: false, error: error.message }),
-      {
-        status: 500,
-        headers: { "content-type": "application/json" },
-      }
+      { status: 500, headers: { "content-type": "application/json" } }
     );
   }
 
@@ -35,8 +28,6 @@ Deno.serve(async () => {
       message: "keepalive pinged",
       timestamp: new Date().toISOString(),
     }),
-    {
-      headers: { "content-type": "application/json" },
-    }
+    { headers: { "content-type": "application/json" } }
   );
 });
